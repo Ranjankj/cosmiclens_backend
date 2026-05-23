@@ -1,9 +1,12 @@
 const axios = require("axios");
 
+const GEMINI_URL =
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent";
+
 const askGemini = async (prompt) => {
   try {
     const response = await axios.post(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent",
+      GEMINI_URL,
       {
         contents: [
           {
@@ -14,18 +17,26 @@ const askGemini = async (prompt) => {
             ],
           },
         ],
+
+        generationConfig: {
+          temperature: 0.7,
+          topP: 0.8,
+          topK: 40,
+          maxOutputTokens: 2048,
+        },
       },
       {
         headers: {
           "Content-Type": "application/json",
+
           "X-goog-api-key": process.env.GEMINI_API_KEY,
         },
       },
     );
 
-    return response.data.candidates[0].content.parts[0].text;
+    return response.data.candidates?.[0]?.content?.parts?.[0]?.text || "";
   } catch (error) {
-    console.error(error.response?.data || error.message);
+    console.error("Gemini API Error:", error.response?.data || error.message);
 
     throw new Error("Gemini API Failed");
   }

@@ -7,6 +7,7 @@ const profileRoutes = require("./routes/profile.routes");
 const personalityRoutes = require("./routes/personality.routes");
 const astrologyRoutes = require("./routes/astrology.routes");
 const usageRoutes = require("./routes/usage.routes");
+const homeRoutes = require("./routes/home.routes");
 
 const app = express();
 
@@ -25,5 +26,6 @@ app.use("/profile", profileRoutes);
 app.use("/personality", personalityRoutes);
 app.use("/astrology", astrologyRoutes);
 app.use("/usage", usageRoutes);
+app.use("/home", homeRoutes);
 
 module.exports = app;
